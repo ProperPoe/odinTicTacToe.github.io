@@ -1,0 +1,63 @@
+/* .layout {
+    display: flex;
+} */
+
+
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+
+.layout .top, .middle, .bottom{
+    display: flex;
+    height: 200px;
+}
+
+.square {
+    border: 1px solid black;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+}
+
+#squareOne{
+    border-top: none;
+    border-left: none;
+}
+#squareTwo{
+    border-top: none;
+}
+#squareThree{
+    border-top: none;
+    border-right: none;
+}
+#squareFour{
+   border-left: none;
+}
+
+#squareSix{
+    border-right: none;
+}
+#squareSeven{
+    border-bottom: none;
+    border-left: none;
+}
+#squareEight{
+    border-bottom: none
+}
+#squareNine{
+    border-bottom: none;
+    border-right: none;
+}
+
+#winner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
