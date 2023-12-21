@@ -51,6 +51,11 @@ body {
     border-bottom: none;
 }
 
+.win{
+    position: absolute;
+    margin-top: 500px;
+}
+
 #winner {
     font-size: 1.5em;
     color: #e74c3c;

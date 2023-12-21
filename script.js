@@ -1,7 +1,10 @@
-const Gameboard = (() => {
-    let board = ["", "", "", "", "", "", "", "", ""];
+////////////////////////////////////////////////////////////CLASS OBJECT OF TIC TAC TOE...SEE FACTORY FUNCTION VERSION BELOW
+class Gameboard {
+    constructor() {
+        this.board = ["", "", "", "", "", "", "", "", ""];
+    }
 
-    const checkWin = () => {
+    checkWin() {
         const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
@@ -10,104 +13,216 @@ const Gameboard = (() => {
 
         return winPatterns.some(pattern => {
             const [a, b, c] = pattern;
-            return board[a] !== "" && board[a] === board[b] && board[a] === board[c];
+            return this.board[a] !== "" && this.board[a] === this.board[b] && this.board[a] === this.board[c];
         });
-    };
+    }
 
-    const isBoardFull = () => board.every(square => square !== "");
+    isBoardFull() {
+        return this.board.every(square => square !== "");
+    }
 
-    const resetBoard = () => {
-        board = ["", "", "", "", "", "", "", "", ""];
-    };
+    resetBoard() {
+        this.board = ["", "", "", "", "", "", "", "", ""];
+    }
 
-    const getBoard = () => [...board];
+    getBoard() {
+        return [...this.board];
+    }
 
-    const makeMove = (index, playerMark) => {
-        if (board[index] === "" && !checkWin() && !isBoardFull()) {
-            board[index] = playerMark;
+    makeMove(index, playerMark) {
+        if (this.board[index] === "" && !this.checkWin() && !this.isBoardFull()) {
+            this.board[index] = playerMark;
             return true;
         }
         return false;
-    };
+    }
+}
 
-    return {
-        getBoard,
-        makeMove,
-        resetBoard,
-        checkWin,
-        isBoardFull
-    };
-})();
+class Player {
+    constructor(mark) {
+        this.mark = mark;
+    }
+}
 
-const Player = (mark) => {
-    return { mark };
-};
+class GameController {
+    constructor() {
+        this.currentPlayer = null;
+        this.gameOn = true;
+        this.playerX = new Player("X");
+        this.playerO = new Player("O");
+        this.currentPlayer = this.playerX;
+    }
 
-const GameController = (() => {
-    let currentPlayer;
-    let gameOn = true;
+    switchPlayer() {
+        this.currentPlayer = (this.currentPlayer === this.playerX) ? this.playerO : this.playerX;
+    }
 
-    const switchPlayer = () => {
-        currentPlayer = (currentPlayer === playerX) ? playerO : playerX;
-    };
-
-    const handlePlayerClick = (index) => {
-        if (gameOn) {
-            if (Gameboard.makeMove(index, currentPlayer.mark)) {
-                updateBoard();
-                if (Gameboard.checkWin()) {
-                    displayWinner(`${currentPlayer.mark} WINS!!`);
-                    gameOn = false;
-                } else if (Gameboard.isBoardFull()) {
-                    displayWinner("IT'S A TIE!!");
+    handlePlayerClick(index) {
+        if (this.gameOn) {
+            if (gameBoard.makeMove(index, this.currentPlayer.mark)) {
+                this.updateBoard();
+                if (gameBoard.checkWin()) {
+                    this.displayWinner(`${this.currentPlayer.mark} WINS!!`);
+                    this.gameOn = false;
+                } else if (gameBoard.isBoardFull()) {
+                    this.displayWinner("IT'S A TIE!!");
                 } else {
-                    switchPlayer();
+                    this.switchPlayer();
                 }
             }
         }
-    };
+    }
 
-    const updateBoard = () => {
-        const board = Gameboard.getBoard();
+    updateBoard() {
+        const board = gameBoard.getBoard();
         squares.forEach((square, index) => {
             square.textContent = board[index];
         });
-    };
+    }
 
-    const displayWinner = (message) => {
+    displayWinner(message) {
         winner.textContent = message;
-    };
+    }
 
-    const resetGame = () => {
-        Gameboard.resetBoard();
-        gameOn = true;
-        currentPlayer = playerX;
+    resetGame() {
+        gameBoard.resetBoard();
+        this.gameOn = true;
+        this.currentPlayer = this.playerX;
         winner.textContent = "";
-        updateBoard();
-    };
-
-    const playerX = Player("X");
-    const playerO = Player("O");
-
-    currentPlayer = playerX;
-
-    return {
-        handlePlayerClick,
-        resetGame
-    };
-})();
+        this.updateBoard();
+    }
+}
 
 // Event listeners
 const squares = document.querySelectorAll(".square");
 const reset = document.querySelector("#reset");
 const winner = document.getElementById("winner");
 
+const gameBoard = new Gameboard();
+const gameController = new GameController();
+
 squares.forEach((square, index) => {
     square.addEventListener("click", () => {
-        GameController.handlePlayerClick(index);
+        gameController.handlePlayerClick(index);
     });
 });
 
 reset.addEventListener("click", () => {
-    GameController.resetGame();
+    gameController.resetGame();
 });
+
+/////////////////////////////////////////////////////////////////////////FACTORY FUNCTION AND IIFE'S
+
+// const Gameboard = (() => {
+//     let board = ["", "", "", "", "", "", "", "", ""];
+
+//     const checkWin = () => {
+//         const winPatterns = [
+//             [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+//             [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+//             [0, 4, 8], [2, 4, 6]             // Diagonals
+//         ];
+
+//         return winPatterns.some(pattern => {
+//             const [a, b, c] = pattern;
+//             return board[a] !== "" && board[a] === board[b] && board[a] === board[c];
+//         });
+//     };
+
+//     const isBoardFull = () => board.every(square => square !== "");
+
+//     const resetBoard = () => {
+//         board = ["", "", "", "", "", "", "", "", ""];
+//     };
+
+//     const getBoard = () => [...board];
+
+//     const makeMove = (index, playerMark) => {
+//         if (board[index] === "" && !checkWin() && !isBoardFull()) {
+//             board[index] = playerMark;
+//             return true;
+//         }
+//         return false;
+//     };
+
+//     return {
+//         getBoard,
+//         makeMove,
+//         resetBoard,
+//         checkWin,
+//         isBoardFull
+//     };
+// })();
+
+// const Player = (mark) => {
+//     return { mark };
+// };
+
+// const GameController = (() => {
+//     let currentPlayer;
+//     let gameOn = true;
+
+//     const switchPlayer = () => {
+//         currentPlayer = (currentPlayer === playerX) ? playerO : playerX;
+//     };
+
+//     const handlePlayerClick = (index) => {
+//         if (gameOn) {
+//             if (Gameboard.makeMove(index, currentPlayer.mark)) {
+//                 updateBoard();
+//                 if (Gameboard.checkWin()) {
+//                     displayWinner(`${currentPlayer.mark} WINS!!`);
+//                     gameOn = false;
+//                 } else if (Gameboard.isBoardFull()) {
+//                     displayWinner("IT'S A TIE!!");
+//                 } else {
+//                     switchPlayer();
+//                 }
+//             }
+//         }
+//     };
+
+//     const updateBoard = () => {
+//         const board = Gameboard.getBoard();
+//         squares.forEach((square, index) => {
+//             square.textContent = board[index];
+//         });
+//     };
+
+//     const displayWinner = (message) => {
+//         winner.textContent = message;
+//     };
+
+//     const resetGame = () => {
+//         Gameboard.resetBoard();
+//         gameOn = true;
+//         currentPlayer = playerX;
+//         winner.textContent = "";
+//         updateBoard();
+//     };
+
+//     const playerX = Player("X");
+//     const playerO = Player("O");
+
+//     currentPlayer = playerX;
+
+//     return {
+//         handlePlayerClick,
+//         resetGame
+//     };
+// })();
+
+// // Event listeners
+// const squares = document.querySelectorAll(".square");
+// const reset = document.querySelector("#reset");
+// const winner = document.getElementById("winner");
+
+// squares.forEach((square, index) => {
+//     square.addEventListener("click", () => {
+//         GameController.handlePlayerClick(index);
+//     });
+// });
+
+// reset.addEventListener("click", () => {
+//     GameController.resetGame();
+// });
