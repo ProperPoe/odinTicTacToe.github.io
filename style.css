@@ -1,63 +1,88 @@
-/* .layout {
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
     display: flex;
-} */
-
-
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
 
 .layout {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 300px;
 }
 
-.layout .top, .middle, .bottom{
+.top, .middle, .bottom {
     display: flex;
-    height: 200px;
 }
 
 .square {
-    border: 1px solid black;
-    width: 100px;
+    border: 2px solid #3498db;
+    width: 80px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3rem;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-#squareOne{
-    border-top: none;
-    border-left: none;
-}
-#squareTwo{
-    border-top: none;
-}
-#squareThree{
-    border-top: none;
-    border-right: none;
-}
-#squareFour{
-   border-left: none;
+.square:hover {
+    background-color: #3498db;
+    transform: scale(1.1);
 }
 
-#squareSix{
-    border-right: none;
+#squareOne, #squareTwo, #squareThree {
+    border-top: none;
 }
-#squareSeven{
-    border-bottom: none;
+
+#squareOne, #squareFour, #squareSeven {
     border-left: none;
 }
-#squareEight{
-    border-bottom: none
-}
-#squareNine{
-    border-bottom: none;
+
+#squareThree, #squareSix, #squareNine {
     border-right: none;
+}
+
+#squareSeven, #squareEight, #squareNine {
+    border-bottom: none;
 }
 
 #winner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 1.5em;
+    color: #e74c3c;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none; 
 }
+
+#winner:not(:empty) {
+    opacity: 1;
+}
+
+button {
+    padding: 10px;
+    font-size: 1em;
+    background-color: #2ecc71;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #27ae60;
+}
+
+p {
+    font-size: 1.2em;
+    margin-top: 20px;
+    text-align: center;
+    color: #333;
+}
+
+
